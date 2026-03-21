@@ -213,10 +213,10 @@ textarea{resize:vertical;min-height:86px;}
 .r-sec-line{flex:1;height:2px;background:linear-gradient(90deg,var(--rb-accent),transparent);border-radius:2px;}
 
 /* Photos */
-.r-photo-list{display:flex;flex-direction:column;gap:20px;}
-.r-photo-wrap{width:100%;border-radius:11px;overflow:hidden;border:1px solid #dde8f4;box-shadow:0 3px 14px rgba(26,58,92,.09);}
-.r-photo-wrap img{width:100%;height:auto;display:block;}
-.r-photo-cap{padding:10px 18px;background:linear-gradient(90deg,#f2f7ff,#f8fbff);font-size:.76rem;color:#5a7a9a;font-style:italic;border-top:1px solid #dde8f4;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;letter-spacing:.02em;}
+.r-photo-list{display:flex;flex-direction:row;gap:14px;align-items:stretch;}
+.r-photo-wrap{flex:1;border-radius:11px;overflow:hidden;border:1px solid #dde8f4;box-shadow:0 3px 14px rgba(26,58,92,.09);display:flex;flex-direction:column;}
+.r-photo-wrap img{width:100%;height:220px;object-fit:cover;display:block;flex:1;}
+.r-photo-cap{padding:8px 14px;background:linear-gradient(90deg,#f2f7ff,#f8fbff);font-size:.73rem;color:#5a7a9a;font-style:italic;border-top:1px solid #dde8f4;text-align:center;display:flex;align-items:center;justify-content:center;gap:5px;letter-spacing:.02em;}
 
 /* Notes */
 .r-notes{background:#f8fafc;border:1px solid #e0eaf4;border-left:5px solid var(--rb-deco);border-radius:0 11px 11px 0;padding:16px 20px;font-size:.9rem;line-height:1.8;color:#2a3f56;}
@@ -334,47 +334,7 @@ textarea{resize:vertical;min-height:86px;}
 }
 
 /* ── SECTION TOGGLES ── */
-.sec-toggles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 22px;
-}
 
-.sec-tog {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 7px 13px;
-  border-radius: 20px;
-  border: 1.5px solid var(--inp-b);
-  background: var(--inp);
-  cursor: pointer;
-  user-select: none;
-  transition: all .22s;
-  font-size: .72rem;
-  font-weight: 600;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.sec-tog:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-  background: var(--sep);
-}
-
-.sec-tog.on {
-  border-color: var(--primary);
-  background: var(--primary);
-  color: #fff;
-  box-shadow: 0 2px 10px rgba(26,58,92,.2);
-}
-
-.sec-tog .tog-icon { font-size: .85rem; }
-
-.sec-tog .tog-check {
   width: 14px; height: 14px;
   border: 2px solid currentColor;
   border-radius: 3px;
@@ -403,6 +363,40 @@ textarea{resize:vertical;min-height:86px;}
   #reportOutput { display: block !important; }
   #reportCard { box-shadow: none !important; border-radius: 0 !important; }
 }
+
+/* ── INLINE SECTION TOGGLE ── */
+.sec-toggle {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1.5px solid var(--inp-b);
+  background: var(--inp);
+  flex-shrink: 0;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color .2s;
+}
+.sec-toggle:hover { border-color: var(--primary); }
+.sec-toggle-half {
+  padding: 4px 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transition: all .2s;
+  color: var(--muted);
+  background: transparent;
+}
+.sec-toggle.included .inc  { background: var(--primary); color: #fff; }
+.sec-toggle.included .exc  { color: var(--muted); }
+.sec-toggle.excluded .exc  { background: #e05050; color: #fff; }
+.sec-toggle.excluded .inc  { color: var(--muted); }
+.form-section { overflow: hidden; }
+.form-section.collapsed { display: none; }
 </style>
 </head>
 <body>
@@ -436,22 +430,6 @@ textarea{resize:vertical;min-height:86px;}
   <!-- FORM -->
   <div class="form-card" id="formSection">
     <form onsubmit="return false">
-
-      <!-- SECTION TOGGLES -->
-      <div class="sec-head" style="margin-bottom:14px"><div class="ico">⚙</div>Choose Sections to Include</div>
-      <div class="sec-toggles" id="secToggles">
-        <div class="sec-tog on" data-sec="sec-details"    onclick="toggleSec('sec-details',this)">   <div class="tog-check"></div><span class="tog-icon">📋</span> Event Details</div>
-        <div class="sec-tog on" data-sec="sec-extra"      onclick="toggleSec('sec-extra',this)">     <div class="tog-check"></div><span class="tog-icon">📄</span> Extra Sections</div>
-        <div class="sec-tog on" data-sec="sec-people"     onclick="toggleSec('sec-people',this)">    <div class="tog-check"></div><span class="tog-icon">👤</span> Speaker &amp; Team</div>
-        <div class="sec-tog on" data-sec="sec-theme"      onclick="toggleSec('sec-theme',this)">     <div class="tog-check"></div><span class="tog-icon">🎨</span> Colour Theme</div>
-        <div class="sec-tog on" data-sec="sec-logo"       onclick="toggleSec('sec-logo',this)">      <div class="tog-check"></div><span class="tog-icon">🏛</span> Church Logo</div>
-        <div class="sec-tog on" data-sec="sec-photos"     onclick="toggleSec('sec-photos',this)">    <div class="tog-check"></div><span class="tog-icon">📸</span> Photos</div>
-        <div class="sec-tog on" data-sec="sec-budget"     onclick="toggleSec('sec-budget',this)">    <div class="tog-check"></div><span class="tog-icon">💰</span> Budget</div>
-        <div class="sec-tog on" data-sec="sec-notes"      onclick="toggleSec('sec-notes',this)">     <div class="tog-check"></div><span class="tog-icon">📝</span> Notes</div>
-        <div class="sec-tog on" data-sec="sec-signature"  onclick="toggleSec('sec-signature',this)"> <div class="tog-check"></div><span class="tog-icon">✍</span> Signature</div>
-      </div>
-
-      <div class="sep" style="margin-top:0"></div>
 
       <div class="form-section" id="sec-details">
       <!-- ① Event Details -->
@@ -492,8 +470,8 @@ textarea{resize:vertical;min-height:86px;}
       <div class="sep"></div>
 
       <div class="form-section" id="sec-extra">
-      <!-- ② Extra Sections (Level-Up style) -->
-      <div class="sec-head"><div class="ico">📄</div>Additional Sections <span class="opt" style="font-size:.72rem;margin-left:6px">(optional — for detailed reports)</span></div>
+      <div class="sec-head"><div class="ico">📄</div>Additional Sections
+        <div class="sec-toggle included" onclick="toggleSec(&quot;sec-extra&quot;,this)"><span class="sec-toggle-half inc">Include</span><span class="sec-toggle-half exc">Exclude</span></div></div>
       <div class="field" style="margin-bottom:12px"><label>Program Planning / Background</label>
         <textarea id="planning" rows="3" placeholder="Describe how the program was planned, the vision behind it, and any outreach strategy used"></textarea>
       </div>
@@ -512,8 +490,8 @@ textarea{resize:vertical;min-height:86px;}
       <div class="sep"></div>
 
       <div class="form-section" id="sec-people">
-      <!-- ③ People -->
-      <div class="sec-head"><div class="ico">👤</div>Speaker &amp; Coordinator</div>
+      <div class="sec-head"><div class="ico">👤</div>Speaker &amp; Coordinator
+        <div class="sec-toggle included" onclick="toggleSec(&quot;sec-people&quot;,this)"><span class="sec-toggle-half inc">Include</span><span class="sec-toggle-half exc">Exclude</span></div></div>
       <div class="g2">
         <div class="field"><label>Main Speaker / Pastor</label>
           <input type="text" id="speaker" placeholder="Full name of the main speaker or pastor"></div>
@@ -530,8 +508,7 @@ textarea{resize:vertical;min-height:86px;}
       <div class="sep"></div>
 
       <div class="form-section" id="sec-theme">
-      <!-- ④ Report Theme -->
-      <div class="sec-head"><div class="ico">🎨</div>Report Colour Theme</div>
+      <div class="sec-head"><div class="ico">🎨</div>Report Colour Theme <div class="sec-toggle included" onclick="toggleSec(&quot;sec-theme&quot;,this)"><span class="sec-toggle-half inc">Include</span><span class="sec-toggle-half exc">Exclude</span></div></div>
       <div class="theme-picker" id="themePicker">
         <div class="rtheme-opt selected" data-rt="rt-navy" onclick="selectReportTheme('rt-navy',this)">
           <div class="rtheme-swatch" style="background:linear-gradient(135deg,#0e2340,#1a3a5c);"></div>
@@ -560,8 +537,7 @@ textarea{resize:vertical;min-height:86px;}
       <div class="sep"></div>
 
       <div class="form-section" id="sec-logo">
-      <!-- ⑤ Logo -->
-      <div class="sec-head"><div class="ico">🏛</div>Church Logo</div>
+      <div class="sec-head"><div class="ico">🏛</div>Church Logo <div class="sec-toggle included" onclick="toggleSec(&quot;sec-logo&quot;,this)"><span class="sec-toggle-half inc">Include</span><span class="sec-toggle-half exc">Exclude</span></div></div>
       <div class="logo-grid">
         <div class="logo-opt" data-logo="cross1" onclick="selectLogo('cross1',this)" title="Classic Cross">
           <svg viewBox="0 0 60 60" fill="none"><rect x="25" y="6" width="10" height="48" rx="3" fill="currentColor" opacity=".85"/><rect x="8" y="20" width="44" height="10" rx="3" fill="currentColor" opacity=".85"/></svg>
@@ -594,13 +570,12 @@ textarea{resize:vertical;min-height:86px;}
       <div class="sep"></div>
 
       <div class="form-section" id="sec-photos">
-      <!-- ⑥ Photos -->
-      <div class="sec-head"><div class="ico">📸</div>Photos / Media</div>
+      <div class="sec-head"><div class="ico">📸</div>Photos / Media <div class="sec-toggle included" onclick="toggleSec(&quot;sec-photos&quot;,this)"><span class="sec-toggle-half inc">Include</span><span class="sec-toggle-half exc">Exclude</span></div></div>
       <div class="upload-zone">
         <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotos(event)">
         <div class="uico">🖼️</div>
         <p><strong>Click to upload</strong> or drag &amp; drop</p>
-        <p style="margin-top:3px">Each photo is full-width in the report with optional caption</p>
+        <p style="margin-top:3px">Maximum <strong>2 photos</strong> — each full-width in the report with optional caption</p>
       </div>
       <div class="photo-items" id="photoItems"></div>
 
@@ -609,8 +584,7 @@ textarea{resize:vertical;min-height:86px;}
       <div class="sep"></div>
 
       <div class="form-section" id="sec-budget">
-      <!-- ⑦ Budget -->
-      <div class="sec-head"><div class="ico">💰</div>Budget &amp; Expenses</div>
+      <div class="sec-head"><div class="ico">💰</div>Budget &amp; Expenses <div class="sec-toggle included" onclick="toggleSec(&quot;sec-budget&quot;,this)"><span class="sec-toggle-half inc">Include</span><span class="sec-toggle-half exc">Exclude</span></div></div>
       <div class="b-hdr"><span>Item Description</span><span>Amount (₹)</span><span></span></div>
       <div class="b-rows" id="budgetRows"></div>
       <button type="button" class="btn-add" onclick="addRow()">+ Add Item</button>
@@ -621,8 +595,7 @@ textarea{resize:vertical;min-height:86px;}
       <div class="sep"></div>
 
       <div class="form-section" id="sec-notes">
-      <!-- ⑧ Notes -->
-      <div class="sec-head"><div class="ico">📝</div>Notes &amp; Follow-ups</div>
+      <div class="sec-head"><div class="ico">📝</div>Notes &amp; Follow-ups <div class="sec-toggle included" onclick="toggleSec(&quot;sec-notes&quot;,this)"><span class="sec-toggle-half inc">Include</span><span class="sec-toggle-half exc">Exclude</span></div></div>
       <div class="field" style="margin-bottom:22px"><label>Prayer Requests / Decisions / Remarks <span class="opt">(optional)</span></label>
         <textarea id="notes" placeholder="Note any salvations, prayer requests, follow-up actions or acknowledgements"></textarea>
       </div>
@@ -630,8 +603,7 @@ textarea{resize:vertical;min-height:86px;}
 
 
       <div class="form-section" id="sec-signature">
-      <!-- ⑨ Signature -->
-      <div class="sec-head"><div class="ico">✍</div>Authorised Signature <span class="opt" style="font-size:.72rem;margin-left:6px">(optional)</span></div>
+      <div class="sec-head"><div class="ico">✍</div>Authorised Signature <div class="sec-toggle included" onclick="toggleSec(&quot;sec-signature&quot;,this)"><span class="sec-toggle-half inc">Include</span><span class="sec-toggle-half exc">Exclude</span></div></div>
       <div class="sig-wrap">
         <div class="sig-header"><span>Sign below</span><button onclick="clearSig()">✕ Clear</button></div>
         <canvas id="sigCanvas"></canvas>
@@ -738,19 +710,55 @@ function getLogoHTML(){
 // ══ PHOTOS ══
 let photos=[];
 function handlePhotos(e){
-  Array.from(e.target.files).forEach(file=>{
+  const MAX = 2;
+  const files = Array.from(e.target.files);
+  const remaining = MAX - photos.length;
+  if (remaining <= 0) {
+    alert('Maximum 2 photos allowed. Remove an existing photo to add a new one.');
+    e.target.value = '';
+    return;
+  }
+  const toAdd = files.slice(0, remaining);
+  if (files.length > remaining) {
+    alert('Maximum 2 photos allowed. Only the first ' + remaining + ' photo(s) will be added.');
+  }
+  toAdd.forEach(file=>{
     const r=new FileReader();
     r.onload=ev=>{photos.push({dataUrl:ev.target.result,desc:''});renderPhotos();};
     r.readAsDataURL(file);
   });
+  e.target.value = '';
 }
 function renderPhotos(){
+  const MAX = 2;
   const c=document.getElementById('photoItems'); c.innerHTML='';
   photos.forEach((p,i)=>{
     const d=document.createElement('div'); d.className='photo-item';
     d.innerHTML=`<img src="${p.dataUrl}"><input type="text" placeholder="Caption (optional)" value="${p.desc}" oninput="photos[${i}].desc=this.value"><button type="button" class="rm-btn" onclick="removePhoto(${i})">✕</button>`;
     c.appendChild(d);
   });
+  // Show count badge and disable/enable upload zone
+  const zone = document.querySelector('.upload-zone');
+  const input = document.getElementById('photoInput');
+  const existing = document.getElementById('photoCountBadge');
+  if (existing) existing.remove();
+  if (photos.length > 0) {
+    const badge = document.createElement('p');
+    badge.id = 'photoCountBadge';
+    badge.style.cssText = 'margin-top:8px;font-size:.75rem;text-align:center;font-weight:600;';
+    badge.style.color = photos.length >= MAX ? '#e05050' : 'var(--muted)';
+    badge.textContent = photos.length + ' / ' + MAX + ' photos added' + (photos.length >= MAX ? ' — limit reached' : '');
+    c.appendChild(badge);
+  }
+  if (photos.length >= MAX) {
+    zone.style.opacity = '0.5';
+    zone.style.pointerEvents = 'none';
+    input.disabled = true;
+  } else {
+    zone.style.opacity = '';
+    zone.style.pointerEvents = '';
+    input.disabled = false;
+  }
 }
 function removePhoto(i){photos.splice(i,1);renderPhotos();}
 
@@ -841,7 +849,13 @@ function generateReport(){
 
   // Signature
   const sigUrl=getSigUrl(), sigNameVal=v('sigName');
-  const sigHTML=sigUrl?`<div class="r-sig-sec"><div class="r-sig-block"><img src="${sigUrl}"><div class="r-sig-line"></div><div class="r-sig-label">Authorised Signature</div>${sigNameVal?`<div class="r-sig-name">${sigNameVal}</div>`:''}</div></div>`:'';
+  // Signature shown in HTML preview; hidden during PDF canvas capture and redrawn via jsPDF
+  const sigHTML = sigUrl ? `<div class="r-sig-sec"><div class="r-sig-block">
+    <img src="${sigUrl}">
+    <div class="r-sig-line"></div>
+    <div class="r-sig-label">Authorised Signature</div>
+    ${sigNameVal ? `<div class="r-sig-name">${sigNameVal}</div>` : ''}
+  </div></div>` : '';
 
   // Logo
   const logoHTML=getLogoHTML();
@@ -902,68 +916,79 @@ async function downloadPDF(){
   document.body.appendChild(spinner);
 
   try {
-    const PDF_W = 210, PDF_H = 297, SCALE = 2, RENDER_W = 900, FOOTER_H = 14;
-    const CONTENT_H = PDF_H - FOOTER_H; // usable height per page in mm
+    const PDF_W = 210, PDF_H = 297, SCALE = 2, RENDER_W = 900, FOOTER_H = 14, HEADER_H = 12;
+    const CONTENT_H = PDF_H - FOOTER_H - HEADER_H; // usable height per page in mm
 
     // Pin card width for clean capture
     const saved = card.getAttribute('style') || '';
     card.style.cssText = 'width:900px !important;border-radius:0 !important;box-shadow:none !important;margin:0 !important;';
+
+    // Hide the report footer during capture — we'll draw it manually via jsPDF
+    // so it never causes an orphan last page
+    const rFoot = card.querySelector('.r-foot');
+    const rFootDisplay = rFoot ? rFoot.style.display : '';
+    if (rFoot) rFoot.style.display = 'none';
+    const rSig = card.querySelector('.r-sig-sec');
+    if (rSig) rSig.style.display = 'none';
+
     await new Promise(r => setTimeout(r, 350));
 
-    // Render full card as one canvas
+    // Render full card as one canvas (without footer)
     const canvas = await html2canvas(card, {
       scale: SCALE, useCORS: true, allowTaint: true,
       backgroundColor: '#ffffff', logging: false,
       width: RENDER_W, windowWidth: RENDER_W, scrollY: 0
     });
+
+    // Restore footer
+    if (rFoot) rFoot.style.display = rFootDisplay;
+    if (rSig) rSig.style.display = '';
     card.setAttribute('style', saved);
 
     const pxPerMM = canvas.width / PDF_W;
     const pageContentPx = CONTENT_H * pxPerMM;
     const totalPx = canvas.height;
 
-    // Build break points — avoid cutting inside elements
+    // Collect block boundaries — each block must not be split
+    // Strategy: if a block doesn't fit remaining space on current page → push to next page
     const cardRect = card.getBoundingClientRect();
-    const forbidden = new Set();
-    card.querySelectorAll('.rh,.rh-people,.r-stats,.r-sec,.r-sec-anchor,.r-photo-wrap,.r-sig-sec,.b-wrap,.r-notes,.r-desc-hero').forEach(el => {
+    const blockSelectors = '.rh,.rh-people,.r-stats,.r-sec-anchor,.r-sec,.r-photo-list,.b-wrap,.r-notes,.r-desc-hero';
+    
+    // Build list of blocks with their pixel top/bottom positions on the canvas
+    const blocks = [];
+    card.querySelectorAll(blockSelectors).forEach(el => {
+      // Skip nested blocks — only top-level
+      const isNested = blocks.some(b => {
+        const bEl = b.el;
+        return bEl && bEl !== el && bEl.contains(el);
+      });
+      if (isNested) return;
       const er = el.getBoundingClientRect();
       const top = Math.round((er.top - cardRect.top) * SCALE);
       const bot = Math.round((er.bottom - cardRect.top) * SCALE);
-      for (let p = top; p < bot; p++) forbidden.add(p);
+      if (bot > top) blocks.push({ el, top, bot, height: bot - top });
     });
 
-    // Pre-compute all page slices
+    // Sort by top position
+    blocks.sort((a, b) => a.top - b.top);
+
+    // Build page breaks by walking through blocks
+    // If a block fits in remaining space → place it; else → new page
     const breaks = [0];
-    let pos = 0;
-    while (pos < totalPx) {
-      let cut = Math.min(pos + pageContentPx, totalPx);
-      if (cut >= totalPx) break;
+    let pageStart = 0;
 
-      // Walk back up to 45% to find a clean gap
-      const maxBack = pageContentPx * 0.45;
-      const minPos  = Math.max(pos + pageContentPx * 0.45, cut - maxBack);
-      let safe = cut;
-      for (let p = Math.floor(cut); p > Math.floor(minPos); p--) {
-        if (!forbidden.has(p)) {
-          let ok = true;
-          for (let q = p; q < p + 6; q++) { if (forbidden.has(q)) { ok = false; break; } }
-          if (ok) { safe = p; break; }
-        }
-      }
-      // Still stuck? find element start just before cut
-      if (safe === cut) {
-        for (let p = Math.floor(cut); p > Math.floor(minPos); p--) {
-          if (!forbidden.has(p - 1) && forbidden.has(p)) { safe = p; break; }
-        }
-      }
-      if (safe <= pos) safe = Math.min(pos + pageContentPx, totalPx);
-      pos = safe;
-      breaks.push(pos);
-    }
+    for (const block of blocks) {
+      const usedOnPage = block.top - pageStart;
+      const remaining  = pageContentPx - usedOnPage;
 
-    // Drop orphan last page (< 10% of page = just footer/sig floating alone)
-    if (breaks.length > 1 && (totalPx - breaks[breaks.length - 1]) < pageContentPx * 0.10) {
-      breaks.pop();
+      // If block height > full page, it must span — just let it (image row is fixed height now)
+      if (block.height > pageContentPx) continue;
+
+      // If block doesn't fit remaining space → break page before this block
+      if (block.height > remaining && remaining < pageContentPx * 0.85) {
+        breaks.push(block.top);
+        pageStart = block.top;
+      }
     }
 
     // Render pages
@@ -986,9 +1011,34 @@ async function downloadPDF(){
       sc.getContext('2d').drawImage(canvas, 0, sliceStart, canvas.width, sliceH, 0, 0, canvas.width, sliceH);
 
       const sliceH_mm = (sliceH / canvas.width) * PDF_W;
-      pdf.addImage(sc.toDataURL('image/jpeg', 0.94), 'JPEG', 0, 0, PDF_W, sliceH_mm);
 
-      // Footer line + text
+      // ── Header (all pages except page 1 which has the report cover) ──
+      if (b > 0) {
+        // Thin top accent line
+        pdf.setDrawColor(180, 195, 215);
+        pdf.setLineWidth(0.4);
+        pdf.line(0, HEADER_H - 1, PDF_W, HEADER_H - 1);
+
+        // Left: org name
+        pdf.setFont('helvetica', 'bold');
+        pdf.setFontSize(7.5);
+        pdf.setTextColor(40, 70, 100);
+        pdf.text(orgNameVal || eventNameVal, 10, HEADER_H - 4);
+
+        // Right: event name (if org present)
+        if (orgNameVal) {
+          pdf.setFont('helvetica', 'normal');
+          pdf.setFontSize(7);
+          pdf.setTextColor(120, 145, 170);
+          pdf.text(eventNameVal, PDF_W - 10, HEADER_H - 4, { align: 'right' });
+        }
+      }
+
+      // Place content slice below header
+      const contentY = (b === 0) ? 0 : HEADER_H;
+      pdf.addImage(sc.toDataURL('image/jpeg', 0.94), 'JPEG', 0, contentY, PDF_W, sliceH_mm);
+
+      // ── Footer line + text ──
       pdf.setDrawColor(200, 210, 220);
       pdf.setLineWidth(0.3);
       pdf.line(10, PDF_H - 10, PDF_W - 10, PDF_H - 10);
@@ -1001,6 +1051,50 @@ async function downloadPDF(){
       pdf.setFont('helvetica', 'bold');
       pdf.setTextColor(100, 120, 140);
       pdf.text('Page ' + (b + 1) + ' of ' + breaks.length, PDF_W - 10, PDF_H - 5.5, { align: 'right' });
+    }
+
+    // ── Draw signature + footer bar on last page ──
+    // Both rendered as canvas — no jsPDF text() calls to avoid coordinate overflow
+    pdf.setPage(breaks.length);
+    const lastPageIdx = breaks.length - 1;
+    const lastSlicePx = totalPx - breaks[lastPageIdx];
+    const lastSliceMM = (lastSlicePx / canvas.width) * PDF_W;
+    const lastHdrOff  = (breaks.length > 1) ? HEADER_H : 0;
+    let   nextY       = lastHdrOff + lastSliceMM + 6;
+
+    // Render .r-sig-sec as a canvas strip
+    const rSigEl = card.querySelector('.r-sig-sec');
+    if (rSigEl) {
+      rSigEl.style.display = 'flex';
+      card.style.cssText = 'width:900px !important;border-radius:0 !important;box-shadow:none !important;';
+      const sigCvs = await html2canvas(rSigEl, {
+        scale: SCALE, useCORS: true, allowTaint: true,
+        backgroundColor: '#ffffff', logging: false,
+        width: RENDER_W, windowWidth: RENDER_W
+      });
+      rSigEl.style.display = 'none';
+      card.style.cssText = '';
+      const sigH_mm = (sigCvs.height / sigCvs.width) * PDF_W;
+      if (nextY + sigH_mm < PDF_H - FOOTER_H - 2) {
+        pdf.addImage(sigCvs.toDataURL('image/png'), 'PNG', 0, nextY, PDF_W, sigH_mm);
+      }
+    }
+
+    // Render .r-foot as canvas, pin to bottom of page
+    const rFootEl = card.querySelector('.r-foot');
+    if (rFootEl) {
+      rFootEl.style.display = '';
+      card.style.cssText = 'width:900px !important;border-radius:0 !important;box-shadow:none !important;';
+      const footCvs = await html2canvas(rFootEl, {
+        scale: SCALE, useCORS: true, allowTaint: true,
+        backgroundColor: '#0e2340', logging: false,
+        width: RENDER_W, windowWidth: RENDER_W
+      });
+      rFootEl.style.display = 'none';
+      card.style.cssText = '';
+      const footH_mm = (footCvs.height / footCvs.width) * PDF_W;
+      const footY = PDF_H - FOOTER_H - footH_mm;
+      pdf.addImage(footCvs.toDataURL('image/jpeg', 0.95), 'JPEG', 0, footY, PDF_W, footH_mm);
     }
 
     const fname = (document.getElementById('eventName').value || 'Event-Report')
@@ -1047,6 +1141,23 @@ function printReport(){
   <script>window.onload=()=>{window.print();window.onafterprint=()=>window.close();}<\/script>
   </body></html>`);
   w.document.close();
+}
+
+
+// ══ SECTION TOGGLES ══
+function toggleSec(secId, el) {
+  const sec = document.getElementById(secId);
+  if (!sec) return;
+  const included = el.classList.contains('included');
+  if (included) {
+    el.classList.remove('included');
+    el.classList.add('excluded');
+    sec.classList.add('collapsed');
+  } else {
+    el.classList.remove('excluded');
+    el.classList.add('included');
+    sec.classList.remove('collapsed');
+  }
 }
 
 
